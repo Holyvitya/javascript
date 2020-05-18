@@ -1,0 +1,78 @@
+<html>
+<script src="dom_utils.js">
+</script>
+	<head>
+		<script>
+			function clr() {
+				var	calcPlace = document.getElementById("calculator");
+				while (calcPlace.firstChild != null) {
+					calcPlace.removeChild(calcPlace.firstChild);
+				}
+			}
+			function add(element) {
+				document.getElementById('calculator').appendChild(element);
+			}
+			function createSimple() {
+				add(text("id_n1"));
+				add(select("id_oper", new Array("+", "-")));
+				add(text("id_n2"));
+				add(button("=", calculateResult));
+				add(text("id_result"));
+			}
+			function createPercent() {
+				add(label("Сумма вклада: "));
+				add(text("id_summa")); add(br());
+				add(label("Срок вклада (лет): "));
+				add(number("id_srok")); add(br());
+				add(label("Процентная ставка (годовых): "));
+				add(text("id_procent")); add(br());
+				add(button("%", calculatePercent)); add(br());
+				add(label("Доход: "));
+				add(text("id_dohod"));
+			}
+			function createKoren() {
+				add(text("id_chislo"));
+				add(button("=", calculateResultKoren));
+				add(text("id_result2"));
+			}
+			function calculatePercent() {
+				var s = document.getElementById("id_summa").value;
+				var t = document.getElementById("id_srok").value;
+				var p = document.getElementById("id_procent").value;
+				document.getElementById('id_dohod').value = 0.01*s*p*t;
+			}
+			function calculateResult() {
+				var n1 = parseFloat(document.getElementById("id_n1").value);
+				var n2 = parseFloat(document.getElementById("id_n2").value);
+				var oper = document.getElementById("id_oper").value;
+				document.getElementById("id_result").value = 
+					oper=="+" ? n1+n2 : n1-n2;
+			}
+			function calculateResultKoren() {
+				var chislo = parseFloat(document.getElementById("id_chislo").value);
+				document.getElementById("id_result2").value = Math.sqrt(chislo);
+			}
+		</script>
+	</head>
+	<body onload="createSimple()">
+		<div id="selector">
+			<input type="radio" name="calculatorType"
+				onclick="clr();createSimple()"/>
+			Обычный калькулятор
+			<br>
+			<br>
+			<input type="radio" name="calculatorType"
+				onclick="clr();createPercent()"/>
+			Калькулятор процентов
+			<br>
+			<br>
+			<input type="radio" name="calculatorType"
+				onclick="clr();createKoren()"/>
+			Калькулятор корней
+		</div>
+		<br>
+		<br>
+		<div id="calculator">
+		</div>
+	</body>
+</html>
